@@ -11,7 +11,7 @@
   padding: 36px 24px;
   background: #ffffff;
   border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(16, 24, 40, 0.08);
+  box-shadow: 0 8px 22px rgba(16, 24, 40, 0.06);
 }
 
 .dwl-pricing-title {
@@ -84,8 +84,22 @@
 .dwl-pricing-plan.is-popular .dwl-pricing-plan-inner {
   background: linear-gradient(170deg, #4e3cf2 0%, #4627de 100%);
   border-color: transparent;
-  box-shadow: 0 20px 40px rgba(74, 56, 220, 0.34);
+  box-shadow: 0 14px 28px rgba(74, 56, 220, 0.26);
   transform: translateY(-8px);
+}
+
+.dwl-pricing-popular-badge {
+  margin: 0 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .dwl-pricing-plan-name {
@@ -160,12 +174,20 @@
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .dwl-pricing-plan-btn:hover,
-.dwl-pricing-plan-btn:focus {
+.dwl-pricing-plan-btn:focus-visible {
   border-color: #4e3cf2;
   color: #4e3cf2;
+  outline: 2px solid #4e3cf2;
+  outline-offset: 2px;
+}
+
+.dwl-pricing-plan-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .dwl-pricing-plan.is-popular .dwl-pricing-plan-name,
@@ -218,5 +240,11 @@
 
   .dwl-pricing-plan.is-popular .dwl-pricing-plan-inner {
     transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dwl-pricing-plan-btn {
+    transition: none;
   }
 }

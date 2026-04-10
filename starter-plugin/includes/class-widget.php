@@ -102,6 +102,21 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'button_url',
+			[
+				'label'       => esc_html__( 'Button URL', 'dwl-vibe-test' ),
+				'type'        => \Elementor\Controls_Manager::URL,
+				'placeholder' => home_url( '/' ),
+				'default'     => [
+					'url'               => '',
+					'is_external'       => false,
+					'nofollow'          => false,
+					'custom_attributes' => '',
+				],
+			]
+		);
+
+		$this->add_control(
 			'feature_icon',
 			[
 				'label'       => esc_html__( 'Feature icon', 'dwl-vibe-test' ),
@@ -222,46 +237,59 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 		$title           = isset( $settings['title'] ) ? $settings['title'] : '';
 		$currency_symbol = isset( $settings['currency_symbol'] ) ? $settings['currency_symbol'] : '$';
 		$button_text     = isset( $settings['button_text'] ) ? $settings['button_text'] : esc_html__( 'Choose Plan', 'dwl-vibe-test' );
+		$button_url      = isset( $settings['button_url']['url'] ) ? esc_url( $settings['button_url']['url'] ) : '';
+		$is_external     = ! empty( $settings['button_url']['is_external'] );
+		$is_nofollow     = ! empty( $settings['button_url']['nofollow'] );
 		$feature_icon    = isset( $settings['feature_icon'] ) ? $settings['feature_icon'] : [];
+		$title_id        = 'dwl-pricing-title-' . $this->get_id();
+		$widget_label    = '' !== $title ? $title : esc_html__( 'Pricing plans', 'dwl-vibe-test' );
+		$link_rel        = trim( ( $is_external ? 'noopener' : '' ) . ' ' . ( $is_nofollow ? 'nofollow' : '' ) );
+		$link_target     = $is_external ? ' target="_blank"' : '';
+		$link_rel_attr   = '' !== $link_rel ? ' rel="' . esc_attr( $link_rel ) . '"' : '';
 
-		echo '<div class="dwl-pricing-table-wrapper">';
+		echo '<section class="dwl-pricing-table-wrapper" aria-label="' . esc_attr( $widget_label ) . '">';
 		echo '<div class="dwl-pricing-shell">';
 
 		if ( '' !== $title ) {
-			echo '<h2 class="dwl-pricing-title">' . esc_html( $title ) . '</h2>';
+			echo '<h2 id="' . esc_attr( $title_id ) . '" class="dwl-pricing-title">' . esc_html( $title ) . '</h2>';
 		}
 		
 
 		if ( '' !== $error && empty( $plans ) ) {
 			echo '<p class="dwl-pricing-error" role="alert">' . esc_html( $error ) . '</p>';
 			echo '</div>';
-			echo '</div>';
+			echo '</section>';
 			return;
 		}
 
 		if ( empty( $plans ) ) {
 			echo '<p class="dwl-pricing-empty">' . esc_html__( 'No pricing plans available.', 'dwl-vibe-test' ) . '</p>';
 			echo '</div>';
-			echo '</div>';
+			echo '</section>';
 			return;
 		}
 
 		echo '<ul class="dwl-pricing-plans" role="list">';
-		foreach ( $plans as $plan ) {
+		foreach ( $plans as $index => $plan ) {
 			$classes = 'dwl-pricing-plan';
+			$card_id = 'dwl-pricing-plan-title-' . $this->get_id() . '-' . (int) $index;
 			if ( ! empty( $plan['popular'] ) ) {
 				$classes .= ' is-popular';
 			}
 			echo '<li class="' . esc_attr( $classes ) . '">';
-			echo '<div class="dwl-pricing-plan-inner">';
+			echo '<article class="dwl-pricing-plan-inner" aria-labelledby="' . esc_attr( $card_id ) . '">';
+			if ( ! empty( $plan['popular'] ) ) {
+				echo '<p class="dwl-pricing-popular-badge">' . esc_html__( 'Most Popular', 'dwl-vibe-test' ) . '</p>';
+			}
 
 			if ( '' !== $plan['name'] ) {
-				echo '<h3 class="dwl-pricing-plan-name">' . esc_html( $plan['name'] ) . '</h3>';
+				echo '<h3 id="' . esc_attr( $card_id ) . '" class="dwl-pricing-plan-name">' . esc_html( $plan['name'] ) . '</h3>';
 			}
 
 			$price_fmt = number_format_i18n( (float) $plan['price'], 2 );
-			echo '<p class="dwl-pricing-plan-price"><span class="dwl-pricing-currency">' . esc_html( $currency_symbol ) . '</span>';
-			echo '<span class="dwl-pricing-amount">' . esc_html( $price_fmt ) . '</span></p>';
+			echo '<p class="dwl-pricing-plan-price"><span class="dwl-pricing-currency" aria-hidden="true">' . esc_html( $currency_symbol ) . '</span>';
+			echo '<span class="dwl-pricing-amount">' . esc_html( $price_fmt ) . '</span><span class="screen-reader-text"> ';
+			echo esc_html__( 'per month', 'dwl-vibe-test' ) . '</span></p>';
 
 			if ( ! empty( $plan['features'] ) ) {
 				echo '<ul class="dwl-pricing-features" role="list">';
@@ -276,9 +304,13 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 				}
 				echo '</ul>';
 			}
-			echo '<a href="#" class="dwl-pricing-plan-btn" aria-label="' . esc_attr__( 'Choose pricing plan', 'dwl-vibe-test' ) . '">' . esc_html( $button_text ) . '</a>';
+			if ( '' !== $button_url ) {
+				echo '<a href="' . esc_url( $button_url ) . '" class="dwl-pricing-plan-btn" aria-label="' . esc_attr__( 'Choose pricing plan', 'dwl-vibe-test' ) . '"' . $link_target . $link_rel_attr . '>' . esc_html( $button_text ) . '</a>';
+			} else {
+				echo '<button type="button" class="dwl-pricing-plan-btn" disabled aria-disabled="true">' . esc_html( $button_text ) . '</button>';
+			}
 
-			echo '</div></li>';
+			echo '</article></li>';
 		}
 		echo '</ul>';
 
@@ -287,6 +319,6 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 		}
 
 		echo '</div>';
-		echo '</div>';
+		echo '</section>';
 	}
 }
