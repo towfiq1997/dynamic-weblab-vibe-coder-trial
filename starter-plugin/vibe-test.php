@@ -20,6 +20,16 @@ define( 'DWL_VIBE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DWL_VIBE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'DWL_VIBE_VERSION', '1.0.0' );
 
+require_once DWL_VIBE_PLUGIN_DIR . 'includes/functions.php';
+
+/**
+ * Load plugin translations.
+ */
+function dwl_vibe_load_textdomain() {
+	load_plugin_textdomain( 'dwl-vibe-test', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+add_action( 'plugins_loaded', 'dwl_vibe_load_textdomain' );
+
 /**
  * Check if Elementor is active.
  */
@@ -49,7 +59,6 @@ add_action( 'elementor/widgets/register', 'dwl_vibe_register_custom_widgets' );
  * Candidate: Implement proper enqueue logic here.
  */
 function dwl_vibe_enqueue_assets() {
-	// wp_enqueue_style( 'dwl-vibe-style', DWL_VIBE_PLUGIN_URL . 'assets/css/style.css', [], DWL_VIBE_VERSION );
-	// wp_enqueue_script( 'dwl-vibe-script', DWL_VIBE_PLUGIN_URL . 'assets/js/script.js', [ 'jquery' ], DWL_VIBE_VERSION, true );
+	wp_register_style( 'dwl-vibe-pricing-style', DWL_VIBE_PLUGIN_URL . 'assets/css/style.css', [], DWL_VIBE_VERSION );
 }
 add_action( 'wp_enqueue_scripts', 'dwl_vibe_enqueue_assets' );
