@@ -50,7 +50,6 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
-
 		$this->add_control(
 			'api_url',
 			[
@@ -171,9 +170,9 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 		$this->add_responsive_control(
 			'cards_columns',
 			[
-				'label'          => esc_html__( 'Cards per row', 'dwl-vibe-test' ),
-				'type'           => \Elementor\Controls_Manager::SELECT,
-				'options'        => [
+				'label'           => esc_html__( 'Cards per row', 'dwl-vibe-test' ),
+				'type'            => \Elementor\Controls_Manager::SELECT,
+				'options'         => [
 					'1' => '1',
 					'2' => '2',
 					'3' => '3',
@@ -182,7 +181,7 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 				'desktop_default' => '3',
 				'tablet_default'  => '2',
 				'mobile_default'  => '1',
-				'selectors'      => [
+				'selectors'       => [
 					'{{WRAPPER}} .dwl-pricing-plans' => 'grid-template-columns: repeat({{VALUE}}, minmax(0, 1fr));',
 				],
 			]
@@ -191,10 +190,10 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 		$this->add_responsive_control(
 			'cards_gap',
 			[
-				'label'          => esc_html__( 'Cards gap', 'dwl-vibe-test' ),
-				'type'           => \Elementor\Controls_Manager::SLIDER,
-				'size_units'     => [ 'px' ],
-				'range'          => [
+				'label'           => esc_html__( 'Cards gap', 'dwl-vibe-test' ),
+				'type'            => \Elementor\Controls_Manager::SLIDER,
+				'size_units'      => [ 'px' ],
+				'range'           => [
 					'px' => [
 						'min' => 0,
 						'max' => 60,
@@ -204,15 +203,15 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 					'size' => 22,
 					'unit' => 'px',
 				],
-				'tablet_default' => [
+				'tablet_default'  => [
 					'size' => 18,
 					'unit' => 'px',
 				],
-				'mobile_default' => [
+				'mobile_default'  => [
 					'size' => 14,
 					'unit' => 'px',
 				],
-				'selectors'      => [
+				'selectors'       => [
 					'{{WRAPPER}} .dwl-pricing-plans' => 'gap: {{SIZE}}{{UNIT}};',
 				],
 			]
@@ -253,7 +252,6 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 		if ( '' !== $title ) {
 			echo '<h2 id="' . esc_attr( $title_id ) . '" class="dwl-pricing-title">' . esc_html( $title ) . '</h2>';
 		}
-		
 
 		if ( '' !== $error && empty( $plans ) ) {
 			echo '<p class="dwl-pricing-error" role="alert">' . esc_html( $error ) . '</p>';
