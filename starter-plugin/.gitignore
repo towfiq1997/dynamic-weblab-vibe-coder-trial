@@ -1,0 +1,21 @@
+# Ignore general files and directories
+.idea/
+.DS_Store
+node_modules/
+vendor/
+build/
+dist/*
+!assets/scss/vendor
+assets/js/*.txt
+.git
+**/*.map
+prepros.config
+# Exclude zip files
+*.zip
+phpcs-summary.txt
+# Editor configurations
+.vscode/
+# Development scripts
+format-code.sh
+format-php.
+
