@@ -50,6 +50,7 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+
 		$this->add_control(
 			'api_url',
 			[
@@ -91,6 +92,117 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'button_text',
+			[
+				'label'   => esc_html__( 'Button text', 'dwl-vibe-test' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Choose Plan', 'dwl-vibe-test' ),
+			]
+		);
+
+		$this->add_control(
+			'feature_icon',
+			[
+				'label'       => esc_html__( 'Feature icon', 'dwl-vibe-test' ),
+				'type'        => \Elementor\Controls_Manager::ICONS,
+				'default'     => [
+					'value'   => 'fas fa-check',
+					'library' => 'fa-solid',
+				],
+				'skin'        => 'inline',
+				'label_block' => false,
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_style_typography',
+			[
+				'label' => esc_html__( 'Typography', 'dwl-vibe-test' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'title_typography',
+				'label'    => esc_html__( 'Title Typography', 'dwl-vibe-test' ),
+				'selector' => '{{WRAPPER}} .dwl-pricing-title',
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'plan_typography',
+				'label'    => esc_html__( 'Plan Typography', 'dwl-vibe-test' ),
+				'selector' => '{{WRAPPER}} .dwl-pricing-plan-name, {{WRAPPER}} .dwl-pricing-plan-price, {{WRAPPER}} .dwl-pricing-features li, {{WRAPPER}} .dwl-pricing-plan-btn',
+			]
+		);
+
+		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_style_layout',
+			[
+				'label' => esc_html__( 'Layout', 'dwl-vibe-test' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_responsive_control(
+			'cards_columns',
+			[
+				'label'          => esc_html__( 'Cards per row', 'dwl-vibe-test' ),
+				'type'           => \Elementor\Controls_Manager::SELECT,
+				'options'        => [
+					'1' => '1',
+					'2' => '2',
+					'3' => '3',
+					'4' => '4',
+				],
+				'desktop_default' => '3',
+				'tablet_default'  => '2',
+				'mobile_default'  => '1',
+				'selectors'      => [
+					'{{WRAPPER}} .dwl-pricing-plans' => 'grid-template-columns: repeat({{VALUE}}, minmax(0, 1fr));',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'cards_gap',
+			[
+				'label'          => esc_html__( 'Cards gap', 'dwl-vibe-test' ),
+				'type'           => \Elementor\Controls_Manager::SLIDER,
+				'size_units'     => [ 'px' ],
+				'range'          => [
+					'px' => [
+						'min' => 0,
+						'max' => 60,
+					],
+				],
+				'desktop_default' => [
+					'size' => 22,
+					'unit' => 'px',
+				],
+				'tablet_default' => [
+					'size' => 18,
+					'unit' => 'px',
+				],
+				'mobile_default' => [
+					'size' => 14,
+					'unit' => 'px',
+				],
+				'selectors'      => [
+					'{{WRAPPER}} .dwl-pricing-plans' => 'gap: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->end_controls_section();
 	}
 
@@ -109,21 +221,27 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 
 		$title           = isset( $settings['title'] ) ? $settings['title'] : '';
 		$currency_symbol = isset( $settings['currency_symbol'] ) ? $settings['currency_symbol'] : '$';
+		$button_text     = isset( $settings['button_text'] ) ? $settings['button_text'] : esc_html__( 'Choose Plan', 'dwl-vibe-test' );
+		$feature_icon    = isset( $settings['feature_icon'] ) ? $settings['feature_icon'] : [];
 
 		echo '<div class="dwl-pricing-table-wrapper">';
+		echo '<div class="dwl-pricing-shell">';
 
 		if ( '' !== $title ) {
 			echo '<h2 class="dwl-pricing-title">' . esc_html( $title ) . '</h2>';
 		}
+		
 
 		if ( '' !== $error && empty( $plans ) ) {
 			echo '<p class="dwl-pricing-error" role="alert">' . esc_html( $error ) . '</p>';
+			echo '</div>';
 			echo '</div>';
 			return;
 		}
 
 		if ( empty( $plans ) ) {
 			echo '<p class="dwl-pricing-empty">' . esc_html__( 'No pricing plans available.', 'dwl-vibe-test' ) . '</p>';
+			echo '</div>';
 			echo '</div>';
 			return;
 		}
@@ -148,10 +266,17 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 			if ( ! empty( $plan['features'] ) ) {
 				echo '<ul class="dwl-pricing-features" role="list">';
 				foreach ( $plan['features'] as $feature ) {
-					echo '<li>' . esc_html( $feature ) . '</li>';
+					echo '<li>';
+					if ( ! empty( $feature_icon['value'] ) ) {
+						echo '<span class="dwl-pricing-feature-icon" aria-hidden="true">';
+						\Elementor\Icons_Manager::render_icon( $feature_icon, [ 'aria-hidden' => 'true' ] );
+						echo '</span>';
+					}
+					echo '<span class="dwl-pricing-feature-text">' . esc_html( $feature ) . '</span></li>';
 				}
 				echo '</ul>';
 			}
+			echo '<a href="#" class="dwl-pricing-plan-btn" aria-label="' . esc_attr__( 'Choose pricing plan', 'dwl-vibe-test' ) . '">' . esc_html( $button_text ) . '</a>';
 
 			echo '</div></li>';
 		}
@@ -161,6 +286,7 @@ class Dwl_Vibe_Pricing_Widget extends \Elementor\Widget_Base {
 			echo '<p class="dwl-pricing-notice">' . esc_html( $error ) . '</p>';
 		}
 
+		echo '</div>';
 		echo '</div>';
 	}
 }

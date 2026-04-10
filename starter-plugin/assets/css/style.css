@@ -1,5 +1,222 @@
 /* DWL Vibe Test - Pricing Table Styles */
 .dwl-pricing-table-wrapper {
-	/* Candidate: Add responsive, accessible, and performant styles here */
-	/* Use CSS variables, flex/grid, and avoid render-blocking patterns */
+  padding: 24px;
+  background: linear-gradient(135deg, #f4f6ff 0%, #fff5f8 100%);
+  border-radius: 24px;
+}
+
+.dwl-pricing-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 36px 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(16, 24, 40, 0.08);
+}
+
+.dwl-pricing-title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #14162b;
+}
+
+.dwl-pricing-subtitle {
+  margin: 8px 0 0;
+  text-align: center;
+  color: #8a8ca1;
+  font-size: 14px;
+}
+
+.dwl-pricing-billing-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.dwl-pricing-billing-toggle span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: #f3f4f8;
+  color: #50546f;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dwl-pricing-billing-toggle .is-active {
+  color: #ffffff;
+  background: linear-gradient(120deg, #4a3ef0, #6f2fff);
+  box-shadow: 0 8px 20px rgba(79, 63, 245, 0.28);
+}
+
+.dwl-pricing-plans {
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.dwl-pricing-plan {
+  margin: 0;
+}
+
+.dwl-pricing-plan-inner {
+  height: 100%;
+  padding: 28px 24px 24px;
+  background: #ffffff;
+  border: 1px solid #eceefa;
+  border-radius: 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.dwl-pricing-plan.is-popular .dwl-pricing-plan-inner {
+  background: linear-gradient(170deg, #4e3cf2 0%, #4627de 100%);
+  border-color: transparent;
+  box-shadow: 0 20px 40px rgba(74, 56, 220, 0.34);
+  transform: translateY(-8px);
+}
+
+.dwl-pricing-plan-name {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #171a2d;
+}
+
+.dwl-pricing-plan-price {
+  margin: 14px 0 18px;
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #121426;
+}
+
+.dwl-pricing-currency {
+  margin-inline-end: 2px;
+  font-size: 0.72em;
+  vertical-align: top;
+}
+
+.dwl-pricing-amount {
+  display: inline-block;
+}
+
+.dwl-pricing-features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.dwl-pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: #4f536b;
+}
+
+.dwl-pricing-feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f3ff4;
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.dwl-pricing-feature-icon i,
+.dwl-pricing-feature-icon svg {
+  width: 1em;
+  height: 1em;
+}
+
+.dwl-pricing-plan-btn {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1.5px solid #cdd3ec;
+  background: #ffffff;
+  color: #303552;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dwl-pricing-plan-btn:hover,
+.dwl-pricing-plan-btn:focus {
+  border-color: #4e3cf2;
+  color: #4e3cf2;
+}
+
+.dwl-pricing-plan.is-popular .dwl-pricing-plan-name,
+.dwl-pricing-plan.is-popular .dwl-pricing-plan-price,
+.dwl-pricing-plan.is-popular .dwl-pricing-features li {
+  color: #ffffff;
+}
+
+.dwl-pricing-plan.is-popular .dwl-pricing-feature-icon {
+  color: #ffffff;
+}
+
+.dwl-pricing-plan.is-popular .dwl-pricing-plan-btn {
+  background: #ffe6e1;
+  border-color: #ffe6e1;
+  color: #4627de;
+}
+
+.dwl-pricing-error,
+.dwl-pricing-empty,
+.dwl-pricing-notice {
+  margin: 20px 0 0;
+  text-align: center;
+}
+
+.dwl-pricing-error {
+  color: #b42318;
+}
+
+@media (max-width: 991px) {
+  .dwl-pricing-plans {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .dwl-pricing-table-wrapper {
+    padding: 16px;
+  }
+
+  .dwl-pricing-shell {
+    padding: 24px 16px;
+  }
+
+  .dwl-pricing-plans {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .dwl-pricing-plan.is-popular .dwl-pricing-plan-inner {
+    transform: none;
+  }
 }
