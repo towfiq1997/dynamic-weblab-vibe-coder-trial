@@ -59,6 +59,6 @@ add_action( 'elementor/widgets/register', 'dwl_vibe_register_custom_widgets' );
  * Candidate: Implement proper enqueue logic here.
  */
 function dwl_vibe_enqueue_assets() {
-	wp_register_style( 'dwl-vibe-pricing-style', DWL_VIBE_PLUGIN_URL . 'assets/css/style.css', [], DWL_VIBE_VERSION );
+	wp_register_style( 'dwl-vibe-pricing-style', DWL_VIBE_PLUGIN_URL . 'assets/css/style.min.css', [], DWL_VIBE_VERSION );
 }
 add_action( 'wp_enqueue_scripts', 'dwl_vibe_enqueue_assets' );
